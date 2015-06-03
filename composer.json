@@ -1,0 +1,13 @@
+{
+    "name": "castiron/castiron",
+    "description": "Cast Iron Coding's utility module for October CMS",
+    "type": "october-module",
+    "authors": [
+        {
+            "name": "Peter Soots",
+            "email": "peter@castironcoding.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
