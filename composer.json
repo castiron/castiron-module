@@ -8,6 +8,9 @@
             "email": "peter@castironcoding.com"
         }
     ],
+    "extra": {
+        "installer-name": "castiron"  
+    },
     "minimum-stability": "dev",
     "require": {}
 }
