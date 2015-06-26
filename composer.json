@@ -9,8 +9,13 @@
         }
     ],
     "extra": {
-        "installer-name": "castiron"  
+        "installer-name": "castiron"
     },
     "minimum-stability": "dev",
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Castiron\\": ""
+        }
+    }
 }
