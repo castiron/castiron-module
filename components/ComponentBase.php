@@ -4,24 +4,46 @@ use Cms\Classes\ComponentBase as Base;
 
 abstract class ComponentBase extends Base
 {
-    protected $vars = [];
-    protected $varsConf = [];
+    /** @var array */
+    protected $funcs = [];
 
-    public function onRun()
+    /** @var \Twig_Environment */
+    protected $twig;
+
+
+    public function init()
     {
-        $this->loadVariables();
+        $this->twig = $this->controller->getTwig();
+        $this->loadContext();
     }
 
     /**
-     * This function adds variables to the twig template context. Since
-     * it uses the ComponentProperty, those functions won't be invoked
-     * until the variable is used in the template.
+     * Add functions to the twig context.
      */
-    protected function loadVariables()
+    protected function loadContext()
     {
-        foreach ($this->vars as $key) {
-            $conf = isset($this->varsConf[$key]) ? $this->varsConf[$key] : null;
-            $this->controller->vars[$key] = new ComponentProperty($this, $key, $conf);
+        foreach ($this->funcs as $key) {
+            $this->addViewFunction($key, [$this, $key]);
         }
+    }
+
+    /**
+     * Adds a function to the twig context.
+     *
+     * @param string $name
+     * @param callable $callable
+     * @param bool|true $once If true, wraps the function in a closure so the callable is only invoked once.
+     */
+    protected function addViewFunction($name, $callable, $once = true)
+    {
+        if ($once) {
+            $callable = function() use ($callable) {
+                static $result = null;
+                if ($result) return $result;
+                $result = call_user_func($callable);
+                return $result;
+            };
+        }
+        $this->twig->addFunction($name, new \Twig_SimpleFunction($name, $callable));
     }
 }
