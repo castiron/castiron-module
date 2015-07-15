@@ -17,7 +17,7 @@
  * Class ComponentProperty
  * @package Castiron\Lib\Components
  */
-class ComponentProperty
+class ComponentProperty implements \Countable, \IteratorAggregate
 {
     /** @var ComponentBase The component we're accessing from the view. */
     protected $component;
@@ -120,13 +120,24 @@ class ComponentProperty
         try {
             $out = $obj->$name;
         } catch (\Exception $e) {
-            try {
-                $out = $obj->$name();
-            } catch (\Exception $e) {
-                $class = get_class($obj);
-                throw new \Exception("Could not access '$name' on $class");
-            }
+            return null;
         }
         return $out;
     }
+
+    public function getIterator()
+    {
+        $res = $this->access($this->obj(), 'getIterator');
+        if (!$res) {
+            $res = new \ArrayIterator($res);
+        }
+        return $res;
+    }
+
+    public function count()
+    {
+        return $this->access($this->obj(), 'count');
+    }
+
+
 }

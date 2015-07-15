@@ -20,7 +20,6 @@ abstract class ComponentBase extends Base
     protected function loadVariables()
     {
         foreach ($this->vars as $key) {
-            if (isset($this->controller->vars[$key])) continue;
             $conf = isset($this->varsConf[$key]) ? $this->varsConf[$key] : null;
             $this->controller->vars[$key] = new ComponentProperty($this, $key, $conf);
         }
