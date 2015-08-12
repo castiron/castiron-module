@@ -6,6 +6,8 @@ abstract class ComponentBase extends Base
 {
     /** @var array */
     protected $funcs = [];
+    /** @var array */
+    protected $funcsNotCached = [];
 
     /** @var \Twig_Environment */
     protected $twig;
@@ -24,6 +26,9 @@ abstract class ComponentBase extends Base
     {
         foreach ($this->funcs as $key) {
             $this->addViewFunction($key, [$this, $key]);
+        }
+        foreach ($this->funcsNotCached as $key) {
+            $this->addViewFunction($key, [$this, $key], false);
         }
     }
 
