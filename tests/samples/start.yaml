@@ -1,0 +1,14 @@
+@import: ~/modules/castiron/tests/samples/top-level.yaml
+
+colors:
+  - green
+  - orange
+
+foods:
+  dairy:
+    - milk
+    - cheese
+    - yogurt
+  meats:
+    @import:
+      - ~/modules/castiron/tests/samples/meats.yaml
