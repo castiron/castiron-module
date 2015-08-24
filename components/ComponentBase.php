@@ -47,6 +47,9 @@ abstract class ComponentBase extends Base
 
                 // use the __SELF__ object from the context so that
                 // our callable only applies to the relevant component
+                if (!isset($context['__SELF__'])) {
+                    throw new \Exception("You can't call a component function outside of a component: '$funcName'.'");
+                }
                 $obj = $context['__SELF__'];
                 if (!$obj) return;
 
@@ -60,6 +63,9 @@ abstract class ComponentBase extends Base
                 // call the function with the given args
                 $args = func_get_args();
                 array_shift($args);
+                if (!method_exists($obj, $funcName)) {
+                    throw new \Exception("You can't call a component function outside of a component: '$funcName'.");
+                }
                 $result = call_user_func_array([$obj, $funcName], $args);
 
                 // save the result for later
@@ -75,12 +81,18 @@ abstract class ComponentBase extends Base
             $realCallable = function($context) use ($funcName) {
                 // use the __SELF__ object from the context so that
                 // our callable only applies to the relevant component
+                if (!isset($context['__SELF__'])) {
+                    throw new \Exception("You can't call a component function outside of a component: '$funcName'.");
+                }
                 $obj = $context['__SELF__'];
                 if (!$obj) return;
 
                 // call the function with the given args
                 $args = func_get_args();
                 array_shift($args);
+                if (!method_exists($obj, $funcName)) {
+                    throw new \Exception("You can't call a component function outside of a component: '$funcName'.");
+                }
                 return call_user_func_array([$obj, $funcName], $args);
             };
         }
