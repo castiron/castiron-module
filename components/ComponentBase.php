@@ -102,7 +102,7 @@ abstract class ComponentBase extends Base
         $funcObj = new \Twig_SimpleFunction($funcName, $realCallable, [
             'needs_context' => true,
         ]);
-        $this->twig->addFunction($funcName, $funcObj);
+        $this->twig->addFunction($funcObj);
 
 
     }
